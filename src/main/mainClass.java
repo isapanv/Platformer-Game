@@ -4,7 +4,7 @@ public class mainClass {
 
 	public static void main(String[] args) {
 		new Game();
-		//System.out.print("Gwaenchana");
+		//System.out.print("something");
 	}
 
 }
