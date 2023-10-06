@@ -2,6 +2,7 @@ package main;
 import javax.swing.JFrame;
 public class GameWindow {
 	private JFrame jframe;
+	
 	public GameWindow(GamePannel gamePanel) {
 		jframe = new JFrame();
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -11,4 +12,5 @@ public class GameWindow {
 		jframe.pack();
 		jframe.setVisible(true);
 	}
+	
 }
