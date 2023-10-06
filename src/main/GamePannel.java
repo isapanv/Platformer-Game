@@ -33,6 +33,11 @@ public class GamePannel extends JPanel{
 		addMouseListener(mouseInputs);
 		addMouseMotionListener(mouseInputs);
 	}
+	public void updateGame() {
+		updateAnimation();
+		setAnimation();
+		updatePos();
+	}
 	private void loadAnimation() {
 		anim = new BufferedImage[7][10];
 		
@@ -116,9 +121,7 @@ public class GamePannel extends JPanel{
 		//g.drawImage(img.getSubimage(0, 0, 75, 100), 0, 0, null);
 		//g.drawImage(img.getSubimage(0, 0, 75, 100), 0, 0, 150, 200, null);
 		//subImg = img.getSubimage(4*100, 0, 100, 100);
-		updateAnimation();
-		setAnimation();
-		updatePos();
+		
 		g.drawImage(anim[playerAction][animIndex], (int)xDelta, (int)yDelta, 200, 200, null);
 	}
 
