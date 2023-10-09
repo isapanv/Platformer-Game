@@ -10,6 +10,8 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import utilities.LoadSave;
+
 
 
 public class Player extends Entity {
@@ -97,9 +99,7 @@ public class Player extends Entity {
 	}
 	
 	private void loadAnimation() {
-		InputStream is = getClass().getResourceAsStream("/cat.png");
-		try {
-			BufferedImage img = ImageIO.read(is);
+			BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 			
 			anim = new BufferedImage[7][10];
 			
@@ -108,18 +108,6 @@ public class Player extends Entity {
 					anim[i][j] = img.getSubimage(j*64, i*64, 64, 64);
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		
-		
 	}
 
 	public boolean isLeft() {
