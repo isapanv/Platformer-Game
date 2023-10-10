@@ -2,6 +2,7 @@ package entities;
 
 import static utilities.Constants.Directions.*;
 import static utilities.Constants.PlayerConstants.*;
+import static utilities.HelpMethods.CanMoveHere;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -10,8 +11,8 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import main.Game;
 import utilities.LoadSave;
-
 
 
 public class Player extends Entity {
@@ -24,21 +25,24 @@ public class Player extends Entity {
 	private boolean left, right, up, down;
 	private BufferedImage[][] anim;
 	private int playerSpeed = 5;
+	private int[][] lvlData;
+	private float xDrawOffSet = 21 * Game.SCALE;
+	private float yDrawOffSet = 21 * Game.SCALE;
 	
-	public Player(float x, float y) {
-		super(x, y);
+	public Player(float x, float y, int width, int height) {
+		super(x,y,width,height);
 		loadAnimation();
+		initHitBox(x, y, 20*Game.SCALE, 35*Game.SCALE);
 	}
 	
 	public void updatePlayer() {
-		
 		updatePos();
 		updateAnimation();
 		setAnimation();
 	}
 	public void renderPlayer(Graphics g) {
-		g.drawImage(anim[playerAction][animIndex], (int)x, (int)y, 200, 200, null);
-	
+		g.drawImage(anim[playerAction][animIndex], (int)(hitbox.x - xDrawOffSet), (int)(hitbox.y - yDrawOffSet), width, height, null);
+		drawHitBox(g);
 	}
 	
 	
@@ -81,19 +85,23 @@ public class Player extends Entity {
 
 	private void updatePos() {
 		moving = false;
+		if (!left && !right && !up && !down)
+			return;
+		float xSpeed = 0, ySpeed = 0;
 		
 		if(left && !right) {
-			x-= playerSpeed;
-			moving = true;
+			xSpeed = -playerSpeed;
 		}else if(right && !left) {
-			x+= playerSpeed;
-			moving = true;
+			xSpeed = playerSpeed;
 		}
 		if(up && !down) {
-			y-= playerSpeed;
-			moving = true;
+			ySpeed = -playerSpeed;
 		}else if(down && !up) {
-			y+=playerSpeed;
+			ySpeed = playerSpeed;	
+		}
+		if (CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, hitbox.width, hitbox.height, lvlData)) {
+			hitbox.x += xSpeed;
+			hitbox.y += ySpeed;
 			moving = true;
 		}
 	}
@@ -108,6 +116,10 @@ public class Player extends Entity {
 					anim[i][j] = img.getSubimage(j*64, i*64, 64, 64);
 				}
 			}
+	}
+	
+	public void loadLevelData(int[][] lvlData) {
+		this.lvlData = lvlData;
 	}
 
 	public boolean isLeft() {

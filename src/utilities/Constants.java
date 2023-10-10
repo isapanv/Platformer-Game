@@ -15,7 +15,6 @@ public class Constants {
 		public static final int DEAD = 4;
 		public static final int POWER_SHOT = 5;
 		public static final int FAST_SHOT = 6;
-	
 		
 		
 		public static int getSpriteAmount(int player_action) {
