@@ -7,10 +7,13 @@ import java.awt.event.MouseEvent;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import ui.PauseOverLey;
 
 public class Playing extends State implements StateMethods {
 	private Player player;
 	private LevelManager levelManager;
+	private PauseOverLey pauseOverLey;
+	private boolean paused = true; 
 
 	public Playing(Game game) {
 		super(game);
@@ -21,6 +24,7 @@ public class Playing extends State implements StateMethods {
 		levelManager = new LevelManager(game);
 		player = new Player(200, 200, (int)(64 * Game.SCALE), (int)(64 * Game.SCALE));
 		player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+		pauseOverLey = new PauseOverLey();
 	}
 	public Player getPlayer() {
 		return player;
@@ -35,14 +39,14 @@ public class Playing extends State implements StateMethods {
 	public void update() {
 		levelManager.update();
 		player.updatePlayer();
-
+		pauseOverLey.update();
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		levelManager.draw(g);
 		player.renderPlayer(g);
-
+		pauseOverLey.draw(g);
 	}
 
 	@Override
@@ -88,20 +92,20 @@ public class Playing extends State implements StateMethods {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (paused)
+			pauseOverLey.mousePressed(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (paused)
+			pauseOverLey.mouseReleased(e);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (paused)
+			pauseOverLey.mouseMoved(e);
 	}
 
 	public void windowFocusLost() {

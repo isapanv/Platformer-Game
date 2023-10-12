@@ -17,6 +17,11 @@ public class Constants {
 			public static final int B_HEIGHT = (int) (B_HEIGHT_DEF * Game.SCALE);
 
 		}
+		public static class PauseButtons{
+			public static final int SOUND_SIZE_DEF = 42;
+			public static final int SOUND_SIZE = (int)(SOUND_SIZE_DEF * Game.SCALE);
+
+		}
 	}
 	public static class PlayerConstants{
 		public static final int IDLE = 0;
