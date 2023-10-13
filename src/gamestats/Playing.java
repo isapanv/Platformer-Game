@@ -24,7 +24,7 @@ public class Playing extends State implements StateMethods {
 		levelManager = new LevelManager(game);
 		player = new Player(200, 200, (int)(64 * Game.SCALE), (int)(64 * Game.SCALE));
 		player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-		pauseOverLey = new PauseOverLey();
+		pauseOverLey = new PauseOverLey(this);
 	}
 	public Player getPlayer() {
 		return player;
@@ -37,15 +37,19 @@ public class Playing extends State implements StateMethods {
 
 	@Override
 	public void update() {
-		levelManager.update();
-		player.updatePlayer();
-		pauseOverLey.update();
+		if (!paused) {
+			levelManager.update();
+			player.updatePlayer();
+		} else {
+			pauseOverLey.update();
+		}
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		levelManager.draw(g);
 		player.renderPlayer(g);
+		if(paused)
 		pauseOverLey.draw(g);
 	}
 
@@ -89,7 +93,9 @@ public class Playing extends State implements StateMethods {
 		}
 
 	}
-
+	public void unpauseGame() {
+		paused = false;
+	}
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (paused)
@@ -110,6 +116,13 @@ public class Playing extends State implements StateMethods {
 
 	public void windowFocusLost() {
 		player.resetDirs();
+	}
+
+	public void mouseDragged(MouseEvent e) {
+		if(paused) {
+			pauseOverLey.mouseDragged(e);
+		}
+		
 	}
 
 
