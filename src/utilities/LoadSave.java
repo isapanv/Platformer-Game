@@ -20,6 +20,12 @@ public class LoadSave {
 	public static final String SOUND = "sound_button.png";
 	public static final String FUNC = "urm_buttons.png";
 	public static final String VOLUME= "volume_buttons.png";
+	public static final String PLAY_BG = "play_bg.png";
+	public static final String BIG_CLOUDS = "big_clouds.png";
+	public static final String SMALL_CLOUDS = "small_clouds.png";
+	
+	
+	
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
 		InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);

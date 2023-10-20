@@ -3,6 +3,19 @@ package utilities;
 import main.Game;
 
 public class Constants {
+	public static class Environment{
+		public static final int BIG_CLOUD_WITDH_DEF = 448;
+		public static final int BIG_CLOUD_HEIGHT_DEF = 101;
+		public static final int BIG_CLOUD_WITDH = (int)(BIG_CLOUD_WITDH_DEF * Game.SCALE);
+		public static final int BIG_CLOUD_HEIGHT = (int)(BIG_CLOUD_HEIGHT_DEF * Game.SCALE);
+		public static final int SMALL_CLOUD_WITDH_DEF = 74;
+		public static final int SMALL_CLOUD_HEIGHT_DEF = 24;
+		public static final int SMALL_CLOUD_WITDH = (int)(SMALL_CLOUD_WITDH_DEF * Game.SCALE);
+		public static final int SMALL_CLOUD_HEIGHT = (int)(SMALL_CLOUD_HEIGHT_DEF * Game.SCALE);
+
+	}
+	
+	
 	public static class Directions{
 		public static final int LEFT = 0;
 		public static final int UP = 1;
