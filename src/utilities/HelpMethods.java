@@ -14,11 +14,14 @@ public class HelpMethods {
 		return false;
 	}
 	public static boolean IsSolid(float x, float y, int[][] lvlData) {
+		//making sure the player is inside visible area
 		int maxWidth = lvlData[0].length * Game.TILES_SIZE;
-		if (x < 0 || x >= maxWidth)
+		if (x < 0 || x >= maxWidth) {
 			return true;
-		if (y < 0 || y >= Game.GAME_HEIGHT)
+		}
+		if (y < 0 || y >= Game.GAME_HEIGHT) {
 			return true;
+		}
 		float xIndex = x / Game.TILES_SIZE;
 		float yIndex = y / Game.TILES_SIZE;
 		int value = lvlData[(int)yIndex][(int)xIndex];

@@ -1,5 +1,6 @@
 package gamestats;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -8,13 +9,21 @@ import entities.Player;
 import levels.LevelManager;
 import main.Game;
 import ui.PauseOverLey;
+import utilities.LoadSave;
 
 public class Playing extends State implements StateMethods {
 	private Player player;
 	private LevelManager levelManager;
 	private PauseOverLey pauseOverLey;
 	private boolean paused = true; 
-
+	
+	private int xlvlOffset;
+	private int lBorder = (int)(0.2* Game.GAME_WIDTH);
+	private int rBorder = (int)(0.8* Game.GAME_WIDTH);
+	private int lvlTilesWidth = LoadSave.GetLevelData()[0].length;
+	private int maxTilesOffset = lvlTilesWidth - Game.TILES_IN_WIDTH;
+	private int maxlvlOffsetX = maxTilesOffset *Game.TILES_SIZE;
+	
 	public Playing(Game game) {
 		super(game);
 		init(); 
@@ -40,17 +49,39 @@ public class Playing extends State implements StateMethods {
 		if (!paused) {
 			levelManager.update();
 			player.updatePlayer();
+			checkBorder();
 		} else {
 			pauseOverLey.update();
 		}
 	}
 
+	//Changing offset to get precise player position at the screen
+	private void checkBorder() {
+		int playerX = (int)player.getHitBox().x;
+		int diff = playerX - xlvlOffset;
+		if(diff > rBorder) {
+			xlvlOffset +=diff-rBorder;
+			
+		}else if(diff < lBorder) {
+			xlvlOffset +=diff - lBorder;
+		}
+		if(xlvlOffset > maxlvlOffsetX) {
+			xlvlOffset = maxlvlOffsetX;
+		}else if(xlvlOffset < 0){
+			xlvlOffset = 0;
+		}
+	}
+	
+	//Getting the image of game onto our game window
 	@Override
 	public void draw(Graphics g) {
-		levelManager.draw(g);
-		player.renderPlayer(g);
-		if(paused)
-		pauseOverLey.draw(g);
+		levelManager.draw(g, xlvlOffset);
+		player.renderPlayer(g,xlvlOffset);
+		if(paused) {
+			g.setColor(new Color(0, 0 ,0, 200));
+			g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
+			pauseOverLey.draw(g);
+		}
 	}
 
 	@Override

@@ -12,7 +12,8 @@ import main.Game;
 public class LoadSave {
 	public static final String PLAYER_ATLAS = "cat.png";
 	public static final String LEVEL_ATLAS = "level.png";
-	public static final String LEVEL_ONE_DATA = "levelone.png";
+	//public static final String LEVEL_ONE_DATA = "levelone.png";
+	public static final String LEVEL_ONE_DATA = "level_one_data_long.png";
 	public static final String MENU_BUTTONS = "button_atlas.png";
 	public static final String MENU = "menu_background.png";
 	public static final String PAUSE = "pause_menu.png";
@@ -36,8 +37,8 @@ public class LoadSave {
 		return img;
 	}
 	public static int[][] GetLevelData() {
-		int[][] lvlData = new int[Game.TILES_IN_HEIGHT][Game.TILES_IN_WIDTH];
 		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
+		int[][] lvlData = new int[img.getHeight()][img.getWidth()];
 		for (int i = 0; i < img.getHeight(); ++i)
 			for (int j = 0; j < img.getWidth(); ++j) {
 				Color color = new Color(img.getRGB(j, i));
