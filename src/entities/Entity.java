@@ -15,10 +15,10 @@ public abstract class Entity {
 		this.width = width;
 		this.height = height;
 	}
-	protected void drawHitBox(Graphics g) {
+	protected void drawHitBox(Graphics g, int xlvlOffset) {
 		// For debugging the hitbox
 		g.setColor(Color.PINK);
-		g.drawRect((int)hitbox.x, (int)hitbox.y, (int)hitbox.width, (int)hitbox.height);
+		g.drawRect((int)hitbox.x - xlvlOffset, (int)hitbox.y, (int)hitbox.width, (int)hitbox.height);
 	}
 	protected void initHitBox(float x, float y, int width, int height) {
 		hitbox = new Rectangle2D.Float(x,y,width,height);

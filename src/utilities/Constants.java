@@ -3,6 +3,44 @@ package utilities;
 import main.Game;
 
 public class Constants {
+	
+	public static class EnemyConsts{
+		public static final int ENEMY1 = 0;
+		public static final int IDLE =0;
+		public static final int RUN =1;
+		public static final int ATTACK =2;
+		public static final int HIT =3;
+		public static final int DEAD =4;
+		
+		public static final int ENEMY_WIDTH_DEF = 72;
+		public static final int ENEMY_HEIGHT_DEF = 32;
+		public static final int ENEMY_WIDTH = (int)(ENEMY_WIDTH_DEF * Game.SCALE);
+		public static final int ENEMY_HEIGHT = (int)(ENEMY_HEIGHT_DEF * Game.SCALE);
+
+		public static final int ENEMY_DRAW_OFFSET_X = (int)(26 * Game.SCALE);
+		public static final int ENEMY_DRAW_OFFSET_Y = (int)(9 * Game.SCALE);
+
+		
+		public static int getSpriteAmount(int action, int type) {
+			switch(type) {
+			case ENEMY1:
+				switch(action) {
+				case IDLE:
+					return 9;
+				case RUN:
+					return 6;
+				case ATTACK:
+					return 7;
+				case HIT:
+					return 4;
+				case DEAD:
+					return 5;
+				}
+			}
+		
+			return 0;
+		}
+	}
 	public static class Environment{
 		public static final int BIG_CLOUD_WITDH_DEF = 448;
 		public static final int BIG_CLOUD_HEIGHT_DEF = 101;

@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import entities.Enemy1;
 import main.Game;
+
+import static utilities.Constants.EnemyConsts.ENEMY1;
 
 public class LoadSave {
 	public static final String PLAYER_ATLAS = "cat.png";
@@ -23,7 +27,7 @@ public class LoadSave {
 	public static final String PLAY_BG = "play_bg.png";
 	public static final String BIG_CLOUDS = "big_clouds.png";
 	public static final String SMALL_CLOUDS = "small_clouds.png";
-	
+	public static final String ENEMY1 = "enemy1.png";
 	
 	
 	public static BufferedImage GetSpriteAtlas(String fileName) {
@@ -54,5 +58,19 @@ public class LoadSave {
 				lvlData[i][j] = value;
 			}
 		return lvlData;
+	}
+	
+	public static ArrayList<Enemy1> GetEnemies() {
+		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
+		ArrayList<Enemy1> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getGreen();
+				if (value == 0) // 0 - ENEMY1
+					list.add(new Enemy1(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+			}
+		return list;
+
 	}
 }
