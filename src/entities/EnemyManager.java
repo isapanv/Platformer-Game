@@ -22,12 +22,12 @@ public class EnemyManager {
 
 	private void addEnemies() {
 		enemies1 = LoadSave.GetEnemies();
-		System.out.println("size of enemy1: " + enemies1.size());
+		//System.out.println("size of enemy1: " + enemies1.size());
 	}
 
-	public void update(int[][] lvlData) {
+	public void update(int[][] lvlData, Player player) {
 		for (Enemy1 c : enemies1)
-			c.update(lvlData);
+			c.update(lvlData, player);
 	}
 
 	public void draw(Graphics g, int xLvlOffset) {
@@ -36,13 +36,14 @@ public class EnemyManager {
 
 	private void drawEnemy1(Graphics g, int xLvlOffset) {
 		for (Enemy1 c : enemies1)
-			g.drawImage(enemy1Arr[c.getState()][c.getAnimIdx()], (int) c.getHitBox().x - xLvlOffset - ENEMY_DRAW_OFFSET_X, (int) c.getHitBox().y - ENEMY_DRAW_OFFSET_Y, ENEMY_WIDTH, ENEMY_HEIGHT, null);
+			g.drawImage(enemy1Arr[c.getEnemyState()][c.getAniIndex()], (int) c.getHitBox().x - xLvlOffset - ENEMY_DRAW_OFFSET_X,
+					(int) c.getHitBox().y - ENEMY_DRAW_OFFSET_Y, ENEMY_WIDTH, ENEMY_HEIGHT, null);
 
 	}
 
 	private void loadEnemyImgs() {
 		enemy1Arr = new BufferedImage[5][9];
-		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.ENEMY1);
+		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.ENEMY1_SPRITE);
 		for (int j = 0; j < enemy1Arr.length; j++)
 			for (int i = 0; i < enemy1Arr[j].length; i++)
 				enemy1Arr[j][i] = temp.getSubimage(i * ENEMY_WIDTH_DEF, j * ENEMY_HEIGHT_DEF, ENEMY_WIDTH_DEF, ENEMY_HEIGHT_DEF);

@@ -2,6 +2,7 @@ package utilities;
 
 import java.awt.geom.Rectangle2D;
 
+import entities.Player;
 import main.Game;
 
 public class HelpMethods {
@@ -24,7 +25,10 @@ public class HelpMethods {
 		}
 		float xIndex = x / Game.TILES_SIZE;
 		float yIndex = y / Game.TILES_SIZE;
-		int value = lvlData[(int)yIndex][(int)xIndex];
+		return IsTileSolid((int)xIndex,(int)yIndex, lvlData);
+	}
+	public static boolean IsTileSolid(int tileX, int tileY, int[][] lvlData) {
+		int value = lvlData[tileY][tileX];
 		if (value >= 48 || value < 0 || value != 11)
 			return true;
 		return false;
@@ -54,7 +58,7 @@ public class HelpMethods {
 		}
 	}
 	public static boolean IsEntityOnFloor(Rectangle2D.Float hitbox, int[][] lvlData) {
-		//check the pixel below bottomleft and bottomright
+		//check the pixel below bottom left and bottom right
 		if (!IsSolid(hitbox.x, hitbox.y + hitbox.height + 1, lvlData)) {
 			if (!IsSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1, lvlData)) {
 				return false;
@@ -65,4 +69,25 @@ public class HelpMethods {
 	public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
 		return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);	}
 	
+	
+	public static boolean IsWalkable(int xStart, int xEnd, int y, int[][] lvlData) {
+		for(int i = 0; i < xEnd - xStart; i++) {
+			if(IsTileSolid(xStart + 1, y, lvlData)) {
+				return false;
+			}
+			if (!IsTileSolid(xStart + i, y + 1, lvlData))
+				return false;
+		}
+		return true;
+	}
+	
+	public static boolean IsSightClear(int[][] lvlData,Rectangle2D.Float hitbox1, Rectangle2D.Float hitbox2, int tileY) {
+		int tileX1 = (int) hitbox1.x/Game.TILES_SIZE;
+		int tileX2 = (int) hitbox2.x/Game.TILES_SIZE;
+		
+		if(tileX1 > tileX2) {
+			return IsWalkable(tileX2, tileX1, tileY, lvlData);
+		}
+		return IsWalkable(tileX1, tileX2, tileY, lvlData);
+	}
 }

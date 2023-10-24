@@ -6,6 +6,7 @@ public class Constants {
 	
 	public static class EnemyConsts{
 		public static final int ENEMY1 = 0;
+		
 		public static final int IDLE =0;
 		public static final int RUN =1;
 		public static final int ATTACK =2;
@@ -21,10 +22,10 @@ public class Constants {
 		public static final int ENEMY_DRAW_OFFSET_Y = (int)(9 * Game.SCALE);
 
 		
-		public static int getSpriteAmount(int action, int type) {
+		public static int getSpriteAmount(int type, int state) {
 			switch(type) {
 			case ENEMY1:
-				switch(action) {
+				switch(state) {
 				case IDLE:
 					return 9;
 				case RUN:
