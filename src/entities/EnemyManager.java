@@ -1,6 +1,7 @@
 package entities;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -35,10 +36,22 @@ public class EnemyManager {
 	}
 
 	private void drawEnemy1(Graphics g, int xLvlOffset) {
-		for (Enemy1 c : enemies1)
-			g.drawImage(enemy1Arr[c.getEnemyState()][c.getAniIndex()], (int) c.getHitBox().x - xLvlOffset - ENEMY_DRAW_OFFSET_X,
-					(int) c.getHitBox().y - ENEMY_DRAW_OFFSET_Y, ENEMY_WIDTH, ENEMY_HEIGHT, null);
+		for (Enemy1 c : enemies1) {
+			if (c.isActive()) {
+			g.drawImage(enemy1Arr[c.getEnemyState()][c.getAniIndex()], (int) c.getHitBox().x - xLvlOffset - ENEMY_DRAW_OFFSET_X + c.flipX(),
+					(int) c.getHitBox().y - ENEMY_DRAW_OFFSET_Y, ENEMY_WIDTH* c.flipW(), ENEMY_HEIGHT, null);
+			c.drawAttackBox(g, xLvlOffset);
+			}
+		}
 
+	}
+	public void checkEnemyHit(Rectangle2D.Float attackBox) {
+		for (Enemy1 c : enemies1)
+			if (c.isActive())
+				if (attackBox.intersects(c.getHitBox())) {
+					c.hurt(10);
+					return;
+				}
 	}
 
 	private void loadEnemyImgs() {
@@ -47,5 +60,10 @@ public class EnemyManager {
 		for (int j = 0; j < enemy1Arr.length; j++)
 			for (int i = 0; i < enemy1Arr[j].length; i++)
 				enemy1Arr[j][i] = temp.getSubimage(i * ENEMY_WIDTH_DEF, j * ENEMY_HEIGHT_DEF, ENEMY_WIDTH_DEF, ENEMY_HEIGHT_DEF);
+	}
+
+	public void resetAllEnemies() {
+		for (Enemy1 c : enemies1)
+			c.resetEnemy();
 	}
 }

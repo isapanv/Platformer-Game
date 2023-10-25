@@ -23,6 +23,10 @@ public class KeyboardInputs implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			
+			GameState.state = GameState.MENU;
+		}
 		switch(GameState.state) {
 		case MENU:
 			gamePanel.getGame().getMenu().keyPressed(e);
