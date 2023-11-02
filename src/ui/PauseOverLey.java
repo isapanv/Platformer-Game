@@ -116,8 +116,10 @@ public class PauseOverLey {
 					playing.unpauseGame();
 				}
 		} else if (isin(e, replayButton)) {
-				if (replayButton.isMousePressed())
-					System.out.println("replay lvl!");
+				if (replayButton.isMousePressed()) {
+					playing.resetAll();
+					playing.unpauseGame();
+				}
 		} else if (isin(e, unpauseButton)) {
 				if (unpauseButton.isMousePressed()) {
 					playing.unpauseGame();

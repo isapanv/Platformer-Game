@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import gamestats.Playing;
+import levels.Level;
 import utilities.LoadSave;
 import static utilities.Constants.EnemyConsts.*;
 
@@ -18,17 +19,22 @@ public class EnemyManager {
 	public EnemyManager(Playing playing) {
 		this.playing = playing;
 		loadEnemyImgs();
-		addEnemies();
 	}
 
-	private void addEnemies() {
-		enemies1 = LoadSave.GetEnemies();
+	public void loadEnemies(Level level) {
+		enemies1 = level.getEnemy();
 		//System.out.println("size of enemy1: " + enemies1.size());
 	}
 
 	public void update(int[][] lvlData, Player player) {
+		boolean isAnyActive = false;
 		for (Enemy1 c : enemies1)
-			c.update(lvlData, player);
+			if (c.isActive()) {
+				c.update(lvlData, player);
+				isAnyActive = true;
+			}
+		if (!isAnyActive)
+			playing.setLevelCompleted(true);
 	}
 
 	public void draw(Graphics g, int xLvlOffset) {

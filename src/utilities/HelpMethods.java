@@ -1,7 +1,12 @@
 package utilities;
 
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import entities.Enemy1;
 import entities.Player;
 import main.Game;
 
@@ -67,7 +72,10 @@ public class HelpMethods {
 		return true;
 	}
 	public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
-		return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);	}
+		if (xSpeed > 0)
+			return IsSolid(hitbox.x + hitbox.width + xSpeed, hitbox.y + hitbox.height + 1, lvlData);	
+		return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);	
+	}
 	
 	
 	public static boolean IsWalkable(int xStart, int xEnd, int y, int[][] lvlData) {
@@ -90,4 +98,42 @@ public class HelpMethods {
 		}
 		return IsWalkable(tileX1, tileX2, tileY, lvlData);
 	}
+	
+	public static int[][] GetLevelData(BufferedImage img) {
+		
+		int[][] lvlData = new int[img.getHeight()][img.getWidth()];
+		for (int i = 0; i < img.getHeight(); ++i)
+			for (int j = 0; j < img.getWidth(); ++j) {
+				Color color = new Color(img.getRGB(j, i));
+				int value = color.getRed();
+				if (value >= 48)
+					value = 0;
+				lvlData[i][j] = value;
+			}
+		return lvlData;
+	}
+	
+	public static ArrayList<Enemy1> GetEnemies(BufferedImage img) {
+		ArrayList<Enemy1> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getGreen();
+				if (value == 0) // 0 - ENEMY1
+					list.add(new Enemy1(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+			}
+		return list;
+	}
+	
+	public static Point GetPlayerSpawn(BufferedImage img) {
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getGreen();
+				if (value == 100) // 0 - ENEMY1
+					return new Point(i*Game.TILES_SIZE, j * Game.TILES_SIZE);
+			}
+		return new Point(1*Game.TILES_SIZE, 1 * Game.TILES_SIZE);
+	}
+	
 }

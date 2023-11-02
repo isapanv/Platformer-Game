@@ -6,6 +6,7 @@ import static utilities.HelpMethods.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.awt.image.BufferedImage;
@@ -70,6 +71,12 @@ public class Player extends Entity {
 		initHitBox(x, y,(int) (20*Game.SCALE),(int)( 28*Game.SCALE));
 		initAttackBox();
 	}
+	public void setSpawn(Point spawn) {
+		this.x = spawn.x;
+		this.y = spawn.y;
+		hitbox.x = x;
+		hitbox.y = y;
+	}
 	
 	private void updateHealthBar() {
 		healthWidth = (int) ((currentHealth / (float) maxHealth) * healthBarWidth);
@@ -113,7 +120,7 @@ public class Player extends Entity {
 	public void renderPlayer(Graphics g, int lvlOffset) {
 		g.drawImage(anim[playerAction][animIndex], (int) (hitbox.x - xDrawOffSet) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffSet), width * flipW, height, null);
 		//drawHitBox(g, lvlOffset);
-		drawAttackBox(g, lvlOffset);
+		//drawAttackBox(g, lvlOffset);
 		drawUI(g);
 	}
 	private void drawAttackBox(Graphics g, int lvlOffsetX) {
