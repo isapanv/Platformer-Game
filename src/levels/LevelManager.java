@@ -13,6 +13,7 @@ public class LevelManager {
 	private BufferedImage[] levelSprite;
 	private ArrayList<Level> levels;
 	private int lvlIndex = 0;
+	
 	public LevelManager(Game game) {
 		this.game = game;
 		//levelSprite = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
@@ -31,7 +32,8 @@ public class LevelManager {
 		game.getPlaying().getEnemyManager().loadEnemies(newLevel);
 		game.getPlaying().getPlayer().loadLevelData(newLevel.getLevelData());
 		game.getPlaying().setMaxLevelOffset(newLevel.getLevelOffset());
-		}
+		game.getPlaying().getObjectManager().loadObjects(newLevel);
+}
 	private void buildAllLevels() {
 		BufferedImage[] allLevels = LoadSave.GetAllLevels();
 		for (BufferedImage img : allLevels)

@@ -17,12 +17,17 @@ import ui.LevelCompletedOverlay;
 import ui.PauseOverLey;
 import utilities.LoadSave;
 import static utilities.Constants.*;
+import static utilities.Constants.Environment.*;
+import objects.ObjectManager;
+import utilities.LoadSave;
 
 public class Playing extends State implements StateMethods {
 	private Player player;
 	private LevelManager levelManager;
 	private PauseOverLey pauseOverLey;
 	private EnemyManager enemyManager;
+	private ObjectManager objectManager;
+	
 	private LevelCompletedOverlay levelCompletedOverlay;
 	private boolean paused = false; 
 	
@@ -61,6 +66,7 @@ public class Playing extends State implements StateMethods {
 
 	private void loadStartLevel() {
 		enemyManager.loadEnemies(levelManager.getCurrentLevel());		
+		objectManager.loadObjects(levelManager.getCurrentLevel());
 	}
 
 	private void calcLvlOffset() {
@@ -70,9 +76,12 @@ public class Playing extends State implements StateMethods {
 	private void init() {
 		levelManager = new LevelManager(game);
 		enemyManager = new EnemyManager(this);
+		objectManager = new ObjectManager(this);
+		
 		player = new Player(200, 200, (int)(64 * Game.SCALE), (int)(64 * Game.SCALE), this);
 		player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
 		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+		
 		pauseOverLey = new PauseOverLey(this);
 		gameOverlay = new GameOverlay(this);
 		levelCompletedOverlay = new LevelCompletedOverlay(this);
@@ -97,6 +106,7 @@ public class Playing extends State implements StateMethods {
 		else if (!gameOver){
 			levelManager.update();
 			player.updatePlayer();
+			objectManager.update();
 			enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			checkBorder();
 		}
@@ -124,9 +134,11 @@ public class Playing extends State implements StateMethods {
 	public void draw(Graphics g) {
 		g.drawImage(play_bg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
 		drawClouds(g);
+		
 		levelManager.draw(g, xlvlOffset);
 		player.renderPlayer(g,xlvlOffset);
 		enemyManager.draw(g, xlvlOffset);
+		objectManager.draw(g, xlvlOffset);
 		if(paused) {
 			g.setColor(new Color(0, 0 ,0, 200));
 			g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
@@ -196,6 +208,7 @@ public class Playing extends State implements StateMethods {
 		lvlCompleted = false;
 		player.resetAll();
 		enemyManager.resetAllEnemies();
+		objectManager.resetAllObjects();
 	}
 	public void unpauseGame() {
 		paused = false;
@@ -212,7 +225,15 @@ public class Playing extends State implements StateMethods {
 	public void checkEnemyHit(Rectangle2D.Float attackBox) {
 		enemyManager.checkEnemyHit(attackBox);
 	}
-
+	public void checkObjectHit(Rectangle2D.Float attackBox) {
+		objectManager.checkObjectHit(attackBox);
+	}
+	public void checkPotionTouched(Rectangle2D.Float hitbox) {
+		objectManager.checkObjectTouched(hitbox);
+	}
+	public void checkSpikesTouched(Player p) {
+		objectManager.checkSpikesTouched(p);
+	}
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
 	}
@@ -255,5 +276,10 @@ public class Playing extends State implements StateMethods {
 	public void setLevelCompleted(boolean lvlCompleted) {
 		this.lvlCompleted = lvlCompleted;
 	}
-
+	public ObjectManager getObjectManager() {
+		return objectManager;
+	}
+	public LevelManager getLevelManager() {
+		return levelManager;
+	}
 }

@@ -3,8 +3,7 @@ package entities;
 import static utilities.Constants.Directions.*;
 import static utilities.Constants.PlayerConstants.*;
 import static utilities.HelpMethods.*;
-import static utilities.Constants.GRAVITY;
-import static utilities.Constants.ANIM_SPEED;
+import static utilities.Constants.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -31,9 +30,11 @@ public class Player extends Entity {
 	private boolean left, right, jump;
 	private BufferedImage[][] anim;
 	//private float playerSpeed = 1.5f * Game.SCALE;
+	
 	private int[][] lvlData;
 	private float xDrawOffSet = 21 * Game.SCALE;
 	private float yDrawOffSet = 25 * Game.SCALE;
+	
 	private float jumpSpeed = -2.5f * Game.SCALE;
 	private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
 	
@@ -95,9 +96,17 @@ public class Player extends Entity {
 			return;
 		attackChecked = true;
 		playing.checkEnemyHit(attackBox);
+		playing.checkObjectHit(attackBox);
 
 	}
 	
+	public void render(Graphics g, int lvlOffset) {
+		g.drawImage(anim[state][animIndex], (int) (hitbox.x - xDrawOffSet) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffSet), width * flipW, height, null);
+//		drawHitbox(g, lvlOffset);
+//		drawAttackBox(g, lvlOffset);
+		drawUI(g);
+	}
+
 	public void updatePlayer() {
 		updateHealthBar();
 
@@ -108,10 +117,21 @@ public class Player extends Entity {
 
 		updateAttackBox();
 		updatePos();
+		if (moving) {
+			checkPotionTouched();
+			checkSpikesTouched();
+		}
 		if (attacking)
 			checkAttack();
 		updateAnimation();
 		setAnimation();
+	}
+	private void checkPotionTouched() {
+		playing.checkPotionTouched(hitbox);
+	}
+	private void checkSpikesTouched() {
+		playing.checkSpikesTouched(this);
+		
 	}
 	private void initAttackBox() {
 		attackBox = new Rectangle2D.Float(x, y, (int) (20 * Game.SCALE), (int) (20 * Game.SCALE));
@@ -253,6 +273,9 @@ public class Player extends Entity {
 		}
 	}
 
+	public void changePower(int value) {
+		// TO DO
+	}
 	private void loadAnimation() {
 			BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 			
@@ -286,7 +309,9 @@ public class Player extends Entity {
 		if (!IsEntityOnFloor(hitbox, lvlData))
 			inAir = true;
 	}
-
+	public void kill() {
+		currentHealth = 0;
+	}
 	public boolean isLeft() {
 		return left;
 	}
@@ -322,6 +347,7 @@ public class Player extends Entity {
 	public void setJump(boolean jump) {
 		this.jump = jump;
 	}
+
 	
 	
 }
