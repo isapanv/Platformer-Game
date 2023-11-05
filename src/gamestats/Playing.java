@@ -42,11 +42,14 @@ public class Playing extends State implements StateMethods {
 	
 	private boolean gameOver;
 	private boolean lvlCompleted;
+	private boolean playerDying;
+
 	private GameOverlay gameOverlay;
 	
 	public Playing(Game game) {
 		super(game);
 		init(); 
+		
 		play_bg = LoadSave.GetSpriteAtlas(LoadSave.PLAY_BG);
 		big_cloud = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
 		small_cloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
@@ -102,8 +105,12 @@ public class Playing extends State implements StateMethods {
 			pauseOverLey.update();
 		} else if (lvlCompleted) {
 			levelCompletedOverlay.update();
-		}
-		else if (!gameOver){
+		}else if (gameOver) {
+			gameOverlay.update();
+		}else if (playerDying) {
+			player.updatePlayer();
+		} 
+		else{
 			levelManager.update();
 			player.updatePlayer();
 			objectManager.update();
@@ -206,6 +213,7 @@ public class Playing extends State implements StateMethods {
 		gameOver = false;
 		paused = false;
 		lvlCompleted = false;
+		playerDying = false;
 		player.resetAll();
 		enemyManager.resetAllEnemies();
 		objectManager.resetAllObjects();
@@ -213,15 +221,7 @@ public class Playing extends State implements StateMethods {
 	public void unpauseGame() {
 		paused = false;
 	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (!gameOver) {
-			if (paused)
-				pauseOverLey.mousePressed(e);
-			else if (lvlCompleted)
-				levelCompletedOverlay.MousePressed(e);
-		}
-	}
+	
 	public void checkEnemyHit(Rectangle2D.Float attackBox) {
 		enemyManager.checkEnemyHit(attackBox);
 	}
@@ -238,13 +238,25 @@ public class Playing extends State implements StateMethods {
 		this.gameOver = gameOver;
 	}
 	@Override
+	public void mousePressed(MouseEvent e) {
+		if (!gameOver) {
+			if (paused)
+				pauseOverLey.mousePressed(e);
+			else if (lvlCompleted)
+				levelCompletedOverlay.MousePressed(e);
+		}else
+			gameOverlay.mousePressed(e);
+	}
+	
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (!gameOver) {
 			if (paused)
 				pauseOverLey.mouseReleased(e);
 			else if (lvlCompleted)
 				levelCompletedOverlay.MouseReleased(e);
-		}
+		}else
+			gameOverlay.mouseReleased(e);
 	}
 
 	@Override
@@ -254,7 +266,8 @@ public class Playing extends State implements StateMethods {
 				pauseOverLey.mouseMoved(e);
 			else if (lvlCompleted)
 				levelCompletedOverlay.MouseMoved(e);
-		}
+		}else
+			gameOverlay.mouseMoved(e);
 	}
 
 	public void windowFocusLost() {
@@ -282,4 +295,9 @@ public class Playing extends State implements StateMethods {
 	public LevelManager getLevelManager() {
 		return levelManager;
 	}
+	public void setPlayerDying(boolean playerDying) {
+		this.playerDying = playerDying;
+
+	}
+	
 }

@@ -67,6 +67,7 @@ public class Player extends Entity {
 		this.maxHealth = 100;
 		this.currentHealth = this.maxHealth;
 		this.walkSpeed =1.5f * Game.SCALE;
+		
 		loadAnimation();
 		initHitBox(20, 28);
 		initAttackBox();
@@ -111,7 +112,16 @@ public class Player extends Entity {
 		updateHealthBar();
 
 		if (currentHealth <= 0) {
-			playing.setGameOver(true);
+			if (state != DEAD) {
+				state = DEAD;
+				animTick = 0;
+				animIndex = 0;
+				playing.setPlayerDying(true);
+			} else if (animIndex == getSpriteAmount(DEAD) - 1 && animTick >= ANIM_SPEED - 1) {
+				playing.setGameOver(true);
+			} else
+				updateAnimation();
+
 			return;
 		}
 
