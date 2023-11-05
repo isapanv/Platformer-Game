@@ -16,12 +16,11 @@ import java.awt.geom.Rectangle2D.Float;
 import main.Game;
 
 public class Enemy1 extends Enemy {
-	private Rectangle2D.Float attackBox;
 	private int attackBoxOffsetX;
 
 	public Enemy1(float x, float y) {
 		super(x, y, ENEMY_WIDTH, ENEMY_HEIGHT, ENEMY1);
-		initHitBox(x, y, (int)(22 * Game.SCALE),(int)(19*Game.SCALE));
+		initHitBox(22, 19);
 		initAttackBox();
 	}
 	public void update(int[][] lvlData, Player player) {
@@ -47,7 +46,7 @@ public class Enemy1 extends Enemy {
 		if(inAir) {
 			updateInAir(lvlData);
 		}else {
-			switch(enemyState) {
+			switch(state) {
 			case IDLE:
 				newState(RUN);
 				break;
@@ -61,9 +60,9 @@ public class Enemy1 extends Enemy {
 				move(lvlData);
 				break;
 			case ATTACK:
-				if (aniIndex == 0)
+				if (animIndex == 0)
 					attackChecked = false;
-				if (aniIndex == 3 && !attackChecked)
+				if (animIndex == 3 && !attackChecked)
 					checkEnemyHit(attackBox, player);
 
 				break;
@@ -74,10 +73,7 @@ public class Enemy1 extends Enemy {
 		
 	}
 	
-	public void drawAttackBox(Graphics g, int xLvlOffset) {
-		g.setColor(Color.red);
-		//g.drawRect((int) (attackBox.x - xLvlOffset), (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
-	} 
+
 	public int flipX() {
 		if (walkDir == RIGHT)
 			return width;

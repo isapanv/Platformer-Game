@@ -44,7 +44,7 @@ public class EnemyManager {
 	private void drawEnemy1(Graphics g, int xLvlOffset) {
 		for (Enemy1 c : enemies1) {
 			if (c.isActive()) {
-			g.drawImage(enemy1Arr[c.getEnemyState()][c.getAniIndex()], (int) c.getHitBox().x - xLvlOffset - ENEMY_DRAW_OFFSET_X + c.flipX(),
+			g.drawImage(enemy1Arr[c.getState()][c.getAniIndex()], (int) c.getHitBox().x - xLvlOffset - ENEMY_DRAW_OFFSET_X + c.flipX(),
 					(int) c.getHitBox().y - ENEMY_DRAW_OFFSET_Y, ENEMY_WIDTH* c.flipW(), ENEMY_HEIGHT, null);
 			c.drawAttackBox(g, xLvlOffset);
 			}
