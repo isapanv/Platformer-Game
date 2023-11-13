@@ -12,13 +12,14 @@ import main.Game;
 public class Menu extends State implements StateMethods {
 
 	private MenuButtons[] buttons = new MenuButtons[3];
-	private BufferedImage backgroundImg;
+	private BufferedImage backgroundImg, backgroundImgPink;
 	private int menuX, menuY, menuWidth, menuHeight;
 	
 	public Menu(Game game) {
 		super(game);
 		loadButtons();
 		loadBackground();
+		backgroundImgPink = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG);
 	}
 
 	private void loadBackground() {
@@ -48,6 +49,7 @@ public class Menu extends State implements StateMethods {
 	@Override
 	public void draw(Graphics g) {
 
+		g.drawImage(backgroundImgPink, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
 		g.drawImage(backgroundImg, menuX, menuY, menuWidth, menuHeight, null);
 
 		for (MenuButtons menu_button : buttons)
@@ -104,8 +106,8 @@ public class Menu extends State implements StateMethods {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER)
-			GameState.state = GameState.PLAYING;
+		//if (e.getKeyCode() == KeyEvent.VK_ENTER)
+		//	GameState.state = GameState.PLAYING;
 
 	}
 

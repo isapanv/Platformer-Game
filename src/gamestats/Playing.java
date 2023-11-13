@@ -62,9 +62,9 @@ public class Playing extends State implements StateMethods {
 	}
 	
 	public void loadNextLevel() {
-		resetAll();
 		levelManager.LoadNextLevel();
 		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+		resetAll();
 	}
 
 	private void loadStartLevel() {
@@ -113,7 +113,7 @@ public class Playing extends State implements StateMethods {
 		else{
 			levelManager.update();
 			player.updatePlayer();
-			objectManager.update();
+			objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			checkBorder();
 		}
@@ -167,8 +167,11 @@ public class Playing extends State implements StateMethods {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON1) {
-			player.setAttacking(true);
+		if (!gameOver) {
+			if (e.getButton() == MouseEvent.BUTTON1)
+				player.setAttacking(true);
+			else if (e.getButton() == MouseEvent.BUTTON3)
+				player.powerAttack();
 		}
 	}
 

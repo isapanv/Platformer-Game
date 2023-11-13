@@ -79,9 +79,10 @@ public class GameOverlay {
 				GameState.state = GameState.MENU;
 			}
 		} else if (isIn(play, e))
-			if (play.isMousePressed())
+			if (play.isMousePressed()) {
 				playing.resetAll();
-
+				playing.getGame().getAudioPlayer().setLevelSong(playing.getLevelManager().getLevelIndex());
+			}
 		menu.resetBools();
 		play.resetBools();
 	}

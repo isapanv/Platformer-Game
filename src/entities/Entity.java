@@ -56,4 +56,7 @@ public abstract class Entity {
 	public Rectangle2D.Float getHitBox() {
 		return hitbox;
 	}
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
 }

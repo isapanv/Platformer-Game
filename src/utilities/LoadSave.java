@@ -37,6 +37,8 @@ public class LoadSave {
 	public static final String LEVEL_ATLAS = "level.png";
 	public static final String MENU_BUTTONS = "menu_b.png";
 	public static final String MENU = "menu.png";
+	public static final String MENU_BACKGROUND = "menu_background.png";
+	public static final String MENU_BACKGROUND_IMG = "background_menu.png";
 	public static final String PAUSE = "pause.png";
 	public static final String SOUND = "sound.png";
 	public static final String FUNC = "urm.png";
@@ -50,6 +52,8 @@ public class LoadSave {
 	public static final String POTION_ATLAS = "potions_sprites.png";
 	public static final String CONTAINER_ATLAS = "objects_sprites.png";
 	public static final String TRAP_ATLAS = "trap_atlas.png";
+	public static final String CANNON_ATLAS = "cannon_atlas.png";
+	public static final String CANNON_BALL = "ball.png";
 	public static final String DEATH_SCREEN = "death_screen.png";
 	public static final String OPTIONS_MENU = "options_background.png";
 	

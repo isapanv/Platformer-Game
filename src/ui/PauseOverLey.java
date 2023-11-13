@@ -1,13 +1,11 @@
 package ui;
 
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import gamestats.GameState;
 import gamestats.Playing;
-import utilities.Constants;
 import main.Game;
 import utilities.LoadSave;
 import static utilities.Constants.UI.PauseButtons.*;
@@ -51,7 +49,7 @@ public class PauseOverLey {
 		menuButton.update();
 		replayButton.update();
 		unpauseButton.update();
-		AudioOptions.update();
+		audioOptions.update();
 	}
 	public void draw(Graphics g) {
 		// background
@@ -83,6 +81,7 @@ public class PauseOverLey {
 	public void mouseReleased(MouseEvent e) {
 		if (isin(e, menuButton)) {
 				if (menuButton.isMousePressed()) {
+					playing.resetAll();
 					GameState.state = GameState.MENU;
 					playing.unpauseGame();
 				}
